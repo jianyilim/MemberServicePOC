@@ -23,7 +23,8 @@ namespace Member.Controllers
         {
             var member = new Models.UserModel()
             {
-                Username = "Test"
+                Username = "Test",
+                Password = "password123"
             };
             return View(member);
         }
