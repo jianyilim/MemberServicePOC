@@ -1,0 +1,21 @@
+﻿<h2>Configuration Settings</h2>
+<p>
+    Site Title: @ViewData["Title"]
+</p>
+<p>
+    Updates: @ViewData["Updates"]
+</p>
+
+@model SampleWebSettings
+@using (Html.BeginForm())
+{
+@Html.EditorForModel()
+                <br /> foreach (var method in typeof(Member.Controllers.SettingsController).GetMethods())
+                                {
+                                    if (method.GetCustomAttributes(typeof(HttpPostAttribute), false).Any())
+                                    {
+                <input type="submit" name=@method.Name value=@method.Name
+                       formaction=@Url.Action(@method.Name) formmethod="post" />}
+
+                                }
+                            }

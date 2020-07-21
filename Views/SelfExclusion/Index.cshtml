@@ -1,0 +1,23 @@
+﻿@model UserModel
+@{ ViewData["Title"] = "Home Page"; }
+
+@using (Html.BeginForm())
+{
+   
+@Html.EditorForModel()
+                <br /> foreach (var method in typeof(Member.Controllers.SelfExclusionController).GetMethods())
+                                {
+                                    if (method.GetCustomAttributes(typeof(HttpPostAttribute), false).Any())
+                                    {
+                <input type="submit" name=@method.Name value=@method.Name
+                       formaction=@Url.Action(@method.Name) formmethod="post" />}
+
+                                }
+                            }
+
+
+<h1>Output</h1>
+<p>
+    @ViewData["Message"]
+</p>
+@Html.DisplayForModel()
