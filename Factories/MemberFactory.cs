@@ -19,15 +19,19 @@ namespace Member.Factories
   
     public abstract class MemberFactory
     {
-        private readonly ServiceProvider _serviceProvider;
+        public static readonly ServiceProvider ServiceProvider = MemberFactory.InitilalizeServiceProvider();
 
         public abstract void ConfigureServices(IServiceCollection serviceCollection);
 
         public MemberFactory()
         {
+        }
+        public static ServiceProvider InitilalizeServiceProvider()
+        {
+            var memberFactory = CreateMemberFactory();
             var serviceCollection = new ServiceCollection();
-            ConfigureServices(serviceCollection);
-            _serviceProvider = serviceCollection.BuildServiceProvider();
+            memberFactory.ConfigureServices(serviceCollection);
+            return serviceCollection.BuildServiceProvider();
         }
 
         public static MemberFactory CreateMemberFactory()
@@ -45,10 +49,13 @@ namespace Member.Factories
             return memberFactory;
         }
 
+
+        public abstract MemberServiceBase CreateMemberService();
+
+
         public static T GetRequiredService<T>()
         {
-            var memberFactory = CreateMemberFactory();
-            return memberFactory._serviceProvider.GetRequiredService<T>();
+            return ServiceProvider.GetRequiredService<T>();
         }
     }
 }

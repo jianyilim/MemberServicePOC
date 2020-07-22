@@ -8,7 +8,7 @@ namespace Member.Services
 {
     public class SelfExclusionServiceBetway : SelfExclusionServiceBase
     {
-        public SelfExclusionServiceBetway(SelfExclusionServiceDependency selfExclusionServiceDependency) : base(selfExclusionServiceDependency)
+        public SelfExclusionServiceBetway() : base()
         {
         }
 

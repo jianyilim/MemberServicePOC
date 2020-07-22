@@ -3,24 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Member.Factories;
 using Member.Interfaces;
 using Member.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Member.Services
 {
-    public class MemberServiceBetwayFlag1Dependency : MemberServiceDependency
+    public class MemberServiceBetwayFlag1 : MemberServiceBetway
     {
-        public readonly IMemberRepositorySecondary MemberRepositorySecondary;
-        public MemberServiceBetwayFlag1Dependency(IMemberRepository iMemberRepository, SelfExclusionServiceBase selfExclusionService, IMemberRepositorySecondary iMemberRepositorySecondary) : base(iMemberRepository,selfExclusionService)
+        private readonly IMemberRepository _memberRepositorySecondary;
+        public MemberServiceBetwayFlag1() : base()
         {
-            MemberRepositorySecondary = iMemberRepositorySecondary;
-        }
-    }
-    public class MemberServiceBetwayFlag1 :MemberServiceBase
-    {
-        public MemberServiceBetwayFlag1(MemberServiceDependency memberServiceDependency) : base(memberServiceDependency)
-        {
+            _memberRepository = MemberFactory.GetRequiredService<IMemberRepositoryBetwayFlag1>();
+            _memberRepositorySecondary = MemberFactory.GetRequiredService<IMemberRepositoryBetwayFlag1Secondary>();
         }
         public override bool RegisterNewMember(UserModel usermodel, out string result)
         {
@@ -29,10 +25,8 @@ namespace Member.Services
 
             if (success)
             {
-                var memberServiceDependency = _memberServiceDependency as MemberServiceBetwayFlag1Dependency;
-
                 //Register at Secondary repository which is Nettium internal DB
-                result = result + "\n" + memberServiceDependency.MemberRepositorySecondary.InsertNewMember(usermodel);
+                result = result + "\n" + _memberRepositorySecondary.InsertNewMember(usermodel);
 
             }
             return success;
@@ -42,12 +36,8 @@ namespace Member.Services
         {
             var success = base.UpdateMember(user, out result);
             if (success)
-            {
-                var memberServiceDependency = _memberServiceDependency as MemberServiceBetwayFlag1Dependency;
-
-                result = result + memberServiceDependency.MemberRepositorySecondary.UpdateMember(user);
-            }
-
+                result = result + _memberRepositorySecondary.UpdateMember(user);
+            
             return success;
 
         }

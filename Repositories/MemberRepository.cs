@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Member.Repositories
 {
-    public abstract class MemberRepository : IMemberRepository
+    public abstract class MemberRepository : IMemberRepository, IMemberRepositoryBetwayFlag1Secondary, IMemberRepositoryBetwayFlag1, IMemberRepositoryBetwayFlag2, IMemberRepositoryBetwayFlag3
     {
         public abstract string InsertNewMember(UserModel userModel);
         public abstract UserModel Login(string userName, string password);
@@ -18,7 +18,7 @@ namespace Member.Repositories
 
         public abstract string UpdateMember(UserModel userModel);
     }
-    public class MemberRepositoryUnitTest : IMemberRepositorySecondary
+    public class MemberRepositoryUnitTest : IMemberRepository, IMemberRepositoryBetwayFlag1Secondary, IMemberRepositoryBetwayFlag1, IMemberRepositoryBetwayFlag2, IMemberRepositoryBetwayFlag3
     {
         public bool CheckMemberExists(string username)
         {
@@ -40,7 +40,7 @@ namespace Member.Repositories
             return "Unit Test";
         }
     }
-    public class MemberRepositoryNettium : MemberRepository, IMemberRepositorySecondary
+    public class MemberRepositoryNettium : MemberRepository
     {
         private static Dictionary<string, UserModel> UserTable = new Dictionary<string, UserModel>();
 

@@ -13,10 +13,12 @@ namespace Member.Controllers
     public class MemberController : Controller
     {
         private readonly MemberServiceBase _memberService;
+        private readonly MemberFactory _memberFactory;
 
         public MemberController()
         {
-            _memberService = MemberFactory.GetRequiredService<MemberServiceBase>();
+            _memberFactory = MemberFactory.CreateMemberFactory();
+            _memberService = _memberFactory.CreateMemberService();
         }
 
         public IActionResult Index()
