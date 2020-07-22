@@ -7,34 +7,23 @@ using System.Dynamic;
 using Member.Interfaces;
 using Member.Models;
 using System.Text.RegularExpressions;
+using Member.Factories;
 
 namespace Member.Services
 {
-    public class MemberServiceDependency
-    {
-        public readonly IMemberRepository MemberRepository;
-        public readonly SelfExclusionServiceBase SelfExclusionService;
-        public MemberServiceDependency(IMemberRepository iMemberRepository, SelfExclusionServiceBase selfExclusionService)
-        {
-            MemberRepository = iMemberRepository;
-            SelfExclusionService = selfExclusionService;
-        }
-    }
 
     public class MemberServiceBase
     {
-        protected readonly MemberServiceDependency _memberServiceDependency;
-        public MemberServiceBase(MemberServiceDependency memberServiceDependency)
-        {
-            _memberServiceDependency = memberServiceDependency;
-        }
+        private protected IMemberRepository _memberRepository;
+        private protected SelfExclusionServiceBase _selfExclusionService;
+ 
     
         public virtual bool RegisterNewMember(UserModel user, out string result)
         {
             result = "";
             if (this.ValidateNewUser(user, out result))
             {
-                result = _memberServiceDependency.MemberRepository.InsertNewMember(user);
+                result = _memberRepository.InsertNewMember(user);
                 return true;
             }
             else
@@ -50,7 +39,7 @@ namespace Member.Services
             }
             else
             {
-                result = _memberServiceDependency.MemberRepository.UpdateMember(user);
+                result = _memberRepository.UpdateMember(user);
                 return true;
 
             }
@@ -59,7 +48,7 @@ namespace Member.Services
         public virtual UserModel Login(UserModel user)
         {
 
-            if (!_memberServiceDependency.SelfExclusionService.CheckHasSelfExclusion(user.Username))
+            if (!_selfExclusionService.CheckHasSelfExclusion(user.Username))
                 user = ValidateLoginCredential(user);
             else
                 user = null;
@@ -68,7 +57,7 @@ namespace Member.Services
         }
         public virtual UserModel ValidateLoginCredential(UserModel user)
         {
-            return _memberServiceDependency.MemberRepository.Login(user.Username, user.Password);
+            return _memberRepository.Login(user.Username, user.Password);
         }
         public bool VerifyPassword(string password)
         {
@@ -83,7 +72,7 @@ namespace Member.Services
         public bool ValidateNewUser(UserModel user, out string resultstring)
         {
             resultstring = string.Empty;
-            if (_memberServiceDependency.MemberRepository.CheckMemberExists(user.Username))
+            if (_memberRepository.CheckMemberExists(user.Username))
             {
                 resultstring = "Member exists";
                 return false;

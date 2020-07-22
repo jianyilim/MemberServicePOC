@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Member.Factories;
+using Member.Interfaces;
 
 namespace Member.Services
 {
-    public class MemberServiceBetwayFlag2 : MemberServiceBase
+    public class MemberServiceBetwayFlag2 : MemberServiceBetway
     {
-        public MemberServiceBetwayFlag2 (MemberServiceDependency memberServiceDependency) : base(memberServiceDependency)
-        { }
+        public MemberServiceBetwayFlag2() : base()
+        {
+            _memberRepository = MemberFactory.GetRequiredService<IMemberRepositoryBetwayFlag2>();
+        }
     }
 }

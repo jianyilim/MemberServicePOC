@@ -34,8 +34,22 @@ namespace Member.Interfaces
         /// <param name="userModel">User model.</param>
         string UpdateMember(UserModel userModel);
     }
-    public interface IMemberRepositorySecondary : IMemberRepository
+    public interface IMemberRepositoryBetwayFlag1Secondary : IMemberRepository
     { 
     
+    }
+
+    public interface IMemberRepositoryBetwayFlag1 : IMemberRepository
+    {
+
+    }
+    public interface IMemberRepositoryBetwayFlag2 : IMemberRepository
+    {
+
+    }
+
+    public interface IMemberRepositoryBetwayFlag3 : IMemberRepository
+    {
+
     }
 }
